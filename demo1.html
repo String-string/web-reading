@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>reading demo</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/demo.css">
+    <link rel="stylesheet" href="css/Creset.css">
+</head>
+<body>
+<div class="container" id="root">
+    <div class="articleAction">
+        <div class="articleActionMiddle">
+
+        </div>
+    </div>
+    <div class="topNav" id="topNav" style="display: none">
+        <div class="backIcon">&lt;</div>
+        <div class="backTitle">返回书架</div>
+    </div>
+    <div class="fictionChapterTitle"></div>
+    <div id="fictionContainer" class="fictionContent">
+        <h4>不要浪费时间</h4>
+        <p>
+            我说，千万不要浪费时间写读书笔记，直接用书就行了。自己心里那么多的问题，有那么多的麻烦和痛苦等待着你解决，你去浪费时间写读书笔记干嘛？！
+            我说，千万不要浪费时间写读书笔记，直接用书就行了。自己心里那么多的问题，有那么多的麻烦和痛苦等待着你解决，你去浪费时间写读书笔记干嘛？！
+            我说，千万不要浪费时间写读书笔记，直接用书就行了。自己心里那么多的问题，有那么多的麻烦和痛苦等待着你解决，你去浪费时间写读书笔记干嘛？！
+            我说，千万不要浪费时间写读书笔记，直接用书就行了。自己心里那么多的问题，有那么多的麻烦和痛苦等待着你解决，你去浪费时间写读书笔记干嘛？！
+        </p>
+        <p>
+            我说，千万不要浪费时间写读书笔记，直接用书就行了。自己心里那么多的问题，有那么多的麻烦和痛苦等待着你解决，你去浪费时间写读书笔记干嘛？！
+            我说，千万不要浪费时间写读书笔记，直接用书就行了。自己心里那么多的问题，有那么多的麻烦和痛苦等待着你解决，你去浪费时间写读书笔记干嘛？！
+            我说，千万不要浪费时间写读书笔记，直接用书就行了。自己心里那么多的问题，有那么多的麻烦和痛苦等待着你解决，你去浪费时间写读书笔记干嘛？！
+        </p>
+        <p>
+            我说，千万不要浪费时间写读书笔记，直接用书就行了。自己心里那么多的问题，有那么多的麻烦和痛苦等待着你解决，你去浪费时间写读书笔记干嘛？！
+            我说，千万不要浪费时间写读书笔记，直接用书就行了。自己心里那么多的问题，有那么多的麻烦和痛苦等待着你解决，你去浪费时间写读书笔记干嘛？！
+        </p>
+    </div>
+    <div class="buttonBar">
+        <ul class="uTab">
+            <li id="prevBtn">上一章</li>
+            <li id="nextBtn">下一章</li>
+        </ul>
+    </div>
+    <div class="navPanelBac fontContainer" style="display: none"></div>
+    <div class="navPanel fontContainer" style="display: none">
+        <div class="childMod">
+            <span>字号</span>
+            <button class="largeFont">大</button>
+            <button class="smallFont">小</button>
+        </div>
+        <div class="childMod" id="bacContainer">
+            <span>背景</span>
+        </div>
+    </div>
+    <div class="footerNav toTr" id="footerNav" style="display: none">
+
+            <div class="muLu toTd middle center">
+                <img src="images/iconmenu.png" alt="">
+                <div class="footerTitle cn">目录</div>
+            </div>
+            <div class="font toTd middle center">
+                <img src="images/iconfont.png" alt="" class="fontBtn">
+                <div class="footerTitle">字体</div>
+            </div>
+        <div class="moShiBtn toTd middle center">
+            <div class="night ">
+                <img src="images/iconnight.png" alt="">
+                <div class="footerTitle">夜间</div>
+            </div>
+            <div class="morning" style="display: none">
+                <img src="images/iconmorning.png" alt="">
+                <div class="footerTitle">日间</div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<script src="js/zepto.min.js"></script>
+<script>
+    window.jQuery=$;
+</script>
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery.base64.js"></script>
+<script src="js/jquery.jsonp.js"></script>
+<script>
+    (function () {
+        var Util=(function () {
+            var perFix="H5reader";
+            var StorageGetter=function (key) {
+                return localStorage.getItem(key);
+            };
+            var StorageSetter=function (key,val) {
+                return localStorage.setItem(key,val);
+            };
+            //数据解密
+            function getBSONP(url, callback) {
+                return $.jsonp({
+                    url : url,
+                    cache : true,
+                    callback : "duokan_fiction_chapter",
+                    success : function(result) {
+                        var data = $.base64.decode(result);
+                        var json = decodeURIComponent(escape(data));
+                        callback(json);
+                    }
+                });
+
+            };
+            return {
+                getBSONP : getBSONP,
+                StorageGetter:StorageGetter,
+                StorageSetter:StorageSetter
+            };
+
+        })();
+        var topnav=$("#topNav");
+        var bottomnav=$("#footerNav");
+        var fontcontainer=$(".fontContainer");
+        var fontbtn=$(".fontBtn");
+        var night=$(".night");
+        var morning=$(".morning");
+        var moshibtn=$(".moShiBtn");
+        var footertitle=$(".footerTitle");
+        var RootContainer=$("#fictionContainer");
+        var backcontainer=$("#bacContainer");
+        //是否是夜间模式
+        var NightMode = false;
+
+        var win=$(window);
+        var doc=$(document);
+
+        var initialFontSize=Util.StorageGetter("font_size");
+        var color = Util.StorageGetter('background_color');
+        var currentColor=Util.StorageGetter("background_color");
+        var font = Util.StorageGetter('font_color');
+        var fontccolor=Util.StorageGetter('font_color');
+
+        initialFontSize=parseInt(initialFontSize);
+        if(!initialFontSize){
+            initialFontSize=14;
+        }
+        RootContainer.css("font-size",initialFontSize);
+        //从缓存中读取的信息进行展示
+        var mouduleBackSwitch=function () {
+            //背景颜色表
+            var colorArr = [{
+                value : '#f7eee5',
+                name : '米白',
+                font : ''
+            }, {
+                value : '#e9dfc7',
+                name : '纸张',
+                font : '#555',
+                id : "font_normal"
+            }, {
+                value : '#a4a4a4',
+                name : '浅灰',
+                font : '#555'
+            }, {
+                value : '#cdefce',
+                name : '护眼',
+                font : '#555'
+            }, {
+                value : '#283548',
+                name : '灰蓝',
+                font : '#7685a2',
+
+            }, {
+                value : '#0f1410',
+                name : '夜间',
+                font : '#4e534f',
+                id : "font_night"
+            }];
+            for(var i=0;i<colorArr.length;i++){
+                var display="none";
+                if(currentColor=colorArr[i].value){
+                    display='';
+                }
+                backcontainer.append('<div class="bacContainer" id="' + colorArr[i].id + '" data-font="' + colorArr[i].font + '" data-color="' + colorArr[i].value + '" style="background-color:' + colorArr[i].value + '">' +
+                    '<div class="bacContainerCurrent" style="display:' + 'none' + '"></div>');
+            }
+                if (color) {
+                    $('body').css('background-color', color);
+                }
+                if (font) {
+                    $('.fictionContent').css('color', font);
+                }
+
+            //夜间模式
+            if (fontccolor == '#4e534f') {
+                NightMode = true;
+                $('.night').show();
+                $('.morning').hide();
+            }else {
+                NightMode = false;
+                $('.morning').show();
+                $('.night').hide();
+            }
+
+        };
+        function main(){
+            //整个项目的入口函数
+            EventHanlder();
+            mouduleBackSwitch();
+            ReaderModel();
+            ReaderBaseFrame();
+        }
+        function ReaderModel(id_, cid_, onChange_) {
+            var Title = "";
+
+            var Fiction_id = id_;
+
+            var Chapter_id = cid_;
+
+            if (Util.StorageGetter(Fiction_id + 'last_chapter')) {
+                Chapter_id = Util.StorageGetter(Fiction_id + 'last_chapter');
+            }
+
+            if (!Chapter_id) {
+                Chapter_id = 1;
+            }
+            var Chapters = [];
+
+            var init = function() {
+                getFictionInfoPromise.then(function(d) {
+                    gotoChapter(Chapter_id);
+                });
+                /*
+                 getFictionInfo(function() {
+                 gotoChapter(Chapter_id);
+                 });
+                 */
+            }
+            var gotoChapter = function(chapter_id) {
+                Chapter_id = chapter_id;
+                getCurChapterContent();
+            };
+
+            //获得当前章节内容
+            var getCurChapterContent = function() {
+                $.get("data/data" + Chapter_id + ".json", function(data) {
+
+                    if (data.result == 0) {
+                        var url = data.jsonp;
+                        Util.getBSONP(url, function(data) {
+                            $('#init_loading').hide();
+                            onChange_ && onChange_(data);
+                        });
+                    } else {
+
+                    }
+                }, 'json');
+                return;
+
+            };
+
+            var getFictionInfoPromise = new Promise(function(resolve, reject) {
+                $.get("data/chapter.json", function(data) {
+                    if (data.result == 0) {
+                        Title = data.title;
+                        $('.backTitle').html('返回书架');
+                        window.ChaptersData = data.chapters;
+                        window.chapter_data = data.chapters;
+                        for (var i = 0; i < data.chapters.length; i++) {
+                            Chapters.push({
+                                "chapter_id" : data.chapters[i].chapter_id,
+                                "title" : data.chapters[i].title
+                            })
+                        }
+                        resolve(Chapters);
+                    } else {
+                        reject(data);
+                    }
+                }, 'json');
+            });
+
+            /*
+            var getFictionInfo = function(callback) {
+            $.get("/data/chapter.json", function(data) {
+            Title = data.title;
+            $('.backTitle').html('返回书架');
+            window.ChaptersData = data.chapters;
+            window.chapter_data = data.chapters;
+            for (var i = 0; i < data.chapters.length; i++) {
+            Chapters.push({
+            "chapter_id" : data.chapters[i].chapter_id,
+            "title" : data.chapters[i].title
+            })
+            }
+
+            callback && callback();
+            }, 'json');
+            };
+            */
+            //获得上一章内容
+            var prevChapter = function() {
+                Chapter_id = parseInt(Chapter_id);
+                if (Chapter_id == 0) {
+                    return
+                }
+                var cid = Chapter_id - 1;
+                gotoChapter(cid);
+                Util.StorageSetter(Fiction_id + 'last_chapter', Chapter_id);
+            };
+
+            //获得下一章内容
+            var nextChapter = function() {
+                Chapter_id = parseInt(Chapter_id);
+                if (Chapter_id == Chapters.length - 1) {
+                    return
+                }
+                var cid = Chapter_id + 1;
+                gotoChapter(cid);
+                Util.StorageSetter(Fiction_id + 'last_chapter', Chapter_id);
+            };
+
+            return {
+                init : init,
+                go : gotoChapter,
+                prev : prevChapter,
+                next : nextChapter,
+                getChapter_id : function() {
+                    return Chapter_id;
+                }
+            };
+
+        }
+        function ReaderBaseFrame(container) {
+            //渲染基本的UI结构
+            function parseChapterData(jsonData) {
+                var jsonObj = JSON.parse(jsonData);
+                var html = "<h4>" + jsonObj.t + "</h4>";
+                for (var i = 0; i < jsonObj.p.length; i++) {
+                    html += "<p>" + jsonObj.p[i] + "</p>";
+                }
+                return html;
+            }
+
+            return function(data) {
+                container.html(parseChapterData(data));
+            };
+
+        }
+        function EventHanlder() {//交互的基本绑定
+
+            //点击屏幕中央事件
+            $(".articleActionMiddle").click(function () {
+                if(topnav.css("display")=="none"){
+                    bottomnav.show();
+                    topnav.show();
+                }else {
+                    bottomnav.hide();
+                    topnav.hide();
+                    fontcontainer.hide();
+
+                }
+            });
+
+            //滑动top 和bottom隐藏事件
+            win.scroll(function () {
+                bottomnav.hide();
+                topnav.hide();
+                fontcontainer.hide();
+            });
+            //字体放大
+            $(".largeFont").click(function () {
+                if(initialFontSize>20){
+                    return;
+                }
+                initialFontSize+=1;
+                Util.StorageSetter("font_size",initialFontSize);
+                RootContainer.css("font-size",initialFontSize);
+
+            });
+            //字体缩小
+            $(".smallFont").click(function () {
+                if(initialFontSize<12){
+                    return;
+                }
+                initialFontSize-=1;
+                Util.StorageSetter("font_size",initialFontSize);
+                RootContainer.css("font-size",initialFontSize);
+
+            });
+            //点击字体，夜间操作按钮
+            fontbtn.click(function () {
+                if(fontcontainer.css("display")=="none"){
+                    fontcontainer.show();
+                    footertitle.addClass("current");
+                }else {
+                    fontcontainer.hide();
+                    footertitle.removeClass("current");
+                }
+            });
+
+            //夜间和白天模式的转化
+            moshibtn.click(function() {
+                if (NightMode) {
+                    $('.morning').hide();
+                    $('.night').show();
+                    $('#font_normal').trigger('click');
+                    $('body').css('background-color', "#0f1410");
+
+                    $(".fictionContent").css("color","#4e534f");
+                    NightMode = false;
+                } else {
+                    $('.morning').show();
+                    $('.night').hide();
+                    $('#font_night').trigger('click');
+                    $('body').css('background-color', "#e9dfc7");
+                    $(".fictionContent").css("color","#555");
+                    NightMode = true;
+                }
+            });
+
+            //字体和背景颜色的设置
+            backcontainer.delegate('.bacContainer', 'click', function() {
+                var color = $(this).data('color');
+                var font=$(this).data("font");
+                backcontainer.find('.bacContainerCurrent').hide();
+                $(this).find('.bacContainerCurrent').show();
+                if(!font){
+                    font="#000";
+                }
+                $('body').css('background-color', color);
+                $(".fictionContent").css("color",font);
+                Util.StorageSetter('background_color', color);
+                Util.StorageSetter("font_color",font);
+                var fontccolor=Util.StorageGetter('font_color');
+                //夜间模式
+                if (fontccolor == '#4e534f') {
+                    NightMode = true;
+                    $('.night').show();
+                    $('.morning').hide();
+
+                } else {
+                    NightMode = false;
+                    $('.night').hide();
+                    $('.morning').show();
+                }
+            });
+
+    }
+
+
+        main();//调用
+    })();
+</script>
+</body>
+</html>
